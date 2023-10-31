@@ -5,12 +5,14 @@ import { LoginPage } from "./pages/login/LoginPage";
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/home/HomePage";
 import { ChallengeLobby } from "./pages/challenge/ChallengeLobby";
+import { Signup } from "./pages/signup/Signup";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="main">
         <Routes>
+          <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/challenge" element={<ChallengeLobby />}></Route>

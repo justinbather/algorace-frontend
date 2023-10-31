@@ -1,11 +1,12 @@
 import logo from "../../assets/images/Logo-text.svg";
 import "../../assets/styles/pages/login.scss";
-import axios from "axios";
-import { BASE_URL } from "../../config/constants";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../config/constants";
 
-export const LoginPage = () => {
+export const Signup = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -15,7 +16,7 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${BASE_URL}/auth/login`,
+        `${BASE_URL}/auth/signup`,
         { username, password },
         {
           headers: {
@@ -25,7 +26,7 @@ export const LoginPage = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         navigate("/home");
       } else {
         console.log(response);
@@ -60,9 +61,8 @@ export const LoginPage = () => {
               id="password"
             ></input>
 
-            <button className="form-container__button">Log in</button>
+            <button className="form-container__button">Sign up</button>
           </div>
-          <p>Sign up</p>
         </form>
       </div>
     </div>
