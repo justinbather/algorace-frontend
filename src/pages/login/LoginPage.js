@@ -29,6 +29,7 @@ export const LoginPage = () => {
         console.log("redirecting to home");
         navigate("/home");
       } else {
+        //Form validation here
         console.log(response);
       }
     } catch (err) {

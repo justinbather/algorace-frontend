@@ -3,6 +3,8 @@ import axios from "axios";
 import { BASE_URL } from "../config/constants";
 import { useNavigate } from "react-router-dom";
 
+//Hook to check user has token for protected routes
+
 export const useVerifyUser = () => {
   const navigate = useNavigate();
   const verifyUser = async () => {

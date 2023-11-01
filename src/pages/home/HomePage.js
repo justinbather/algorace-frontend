@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useVerifyUser } from "../../hooks/useVerifyUser";
 
 export const HomePage = () => {
-  const navigate = useNavigate();
   const verifyUser = useVerifyUser();
 
   return (
