@@ -4,7 +4,7 @@ import "../../assets/styles/pages/home.scss";
 import { useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config/constants";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useVerifyUser } from "../../hooks/useVerifyUser";
 
 export const HomePage = () => {
@@ -21,7 +21,9 @@ export const HomePage = () => {
           </p>
         </div>
         <div className="challenge__buttons">
-          <button className="button button--primary">Start a Lobby</button>
+          <Link to="/challenge">
+            <button className="button button--primary">Start a Lobby</button>
+          </Link>
           <button className="button button--secondary">Join a Lobby</button>
         </div>
       </div>
@@ -31,7 +33,9 @@ export const HomePage = () => {
           <p>Practice, learn, repeat</p>
         </div>
         <div className="practice__buttons">
-          <button className="button button--primary">Quick Start</button>
+          <Link to="/practice">
+            <button className="button button--primary">Quick Start</button>
+          </Link>
           <button className="button button--secondary">Setup Practice</button>
         </div>
       </div>

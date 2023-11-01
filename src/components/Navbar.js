@@ -1,6 +1,6 @@
 import logo from "../assets/images/Logo.svg";
 import "../assets/styles/pages/navbar.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../config/constants";
 
@@ -32,7 +32,9 @@ export const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar__image-cont">
-        <img src={logo}></img>
+        <Link to="/home">
+          <img src={logo}></img>
+        </Link>
       </div>
       <div className="navbar__inner-content">
         <p className="navbar__link">Home</p>
