@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL, COMPILE_URL, MANAGER_URL } from "../../config/constants";
-import data from "../../config/starter_code.txt";
+
 import { Navbar } from "../../components/Navbar";
 
 export const PracticeEditor = () => {
@@ -13,18 +13,8 @@ export const PracticeEditor = () => {
   const [errors, setErrors] = useState("");
   const [hints, setHints] = useState("");
   const [result, setResult] = useState("");
-  const [mockTest, setMockTest] = useState("");
 
   const { problemId } = useParams();
-
-  const readFile = () => {
-    const code = fetch(data)
-      .then((d) => d.text())
-      .then((text) => {
-        console.log(text);
-        setUserCode(text);
-      });
-  };
 
   const fetchProblem = async () => {
     try {
