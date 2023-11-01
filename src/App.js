@@ -20,7 +20,7 @@ function App() {
           <Route path="/challenge" element={<ChallengeLobby />}></Route>
           <Route path="/practice" element={<Practice />}></Route>
           <Route
-            path="/practice/:problemId"
+            path="/practice/:problemTitle/:language"
             element={<PracticeEditor />}
           ></Route>
         </Routes>

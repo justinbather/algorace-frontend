@@ -34,9 +34,9 @@ export const Practice = () => {
         </div>
         <div className="lobby-setup__problem-container">
           {problems.map((problem) => (
-            <Link to={`/practice/${problem._id}`}>
+            <Link to={`/practice/${problem.title}/javascript`}>
               <div className="problem-card">
-                <p>Two sum</p>
+                <p>{problem.title}</p>
                 <p>Hashtable</p>
                 <p>Easy</p>
               </div>

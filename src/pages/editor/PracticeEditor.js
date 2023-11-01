@@ -1,7 +1,7 @@
 import MonacoEditor from "react-monaco-editor";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BASE_URL, COMPILE_URL, MANAGER_URL } from "../../config/constants";
 import "../../assets/styles/pages/editor.scss";
 
@@ -15,20 +15,23 @@ export const PracticeEditor = () => {
   const [hints, setHints] = useState("");
   const [result, setResult] = useState("");
 
-  const { problemId } = useParams();
+  const { problemTitle } = useParams();
 
   const fetchProblem = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/problems/${problemId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${BASE_URL}/problems/${problemTitle}/javascript`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
       console.log(response.data.problem);
       setProblem(response.data.problem);
-      setUserCode(response.data.problem.starterCode);
+      setUserCode(response.data.problem.userStarterCode);
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +44,7 @@ export const PracticeEditor = () => {
         `${MANAGER_URL}/test`,
         {
           code: userCode,
-          lang: "Javascript",
+          problem: problem,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -88,9 +91,15 @@ export const PracticeEditor = () => {
             onChange={handleChange}
           />
           <div className="container__button-cont">
-            <button className="button button--danger">Quit</button>
-            <button className="button button--secondary">Test</button>
-            <button className="button button--primary">Submit</button>
+            <Link to="/home">
+              <button className="button button--danger">Quit</button>
+            </Link>
+            <button className="button button--secondary" onClick={handleSubmit}>
+              Test
+            </button>
+            <button className="button button--primary" onClick={handleSubmit}>
+              Submit
+            </button>
           </div>
           <label className="output-cont__label">Console</label>
           <div className="output-cont"></div>
