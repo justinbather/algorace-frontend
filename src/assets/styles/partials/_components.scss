@@ -16,6 +16,11 @@
     border: 1px solid rgba(255, 255, 255, 0.43);
     background: none;
   }
+
+  &--danger {
+    border: 1px solid rgba(255, 0, 0, 0.43);
+    background: none;
+  }
 }
 
 .problem-card {

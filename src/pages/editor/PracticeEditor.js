@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL, COMPILE_URL, MANAGER_URL } from "../../config/constants";
+import "../../assets/styles/pages/editor.scss";
 
 import { Navbar } from "../../components/Navbar";
 
@@ -66,42 +67,33 @@ export const PracticeEditor = () => {
 
   return (
     <>
-      <Navbar />
-      <MonacoEditor
-        width="800"
-        height="600"
-        language="python"
-        theme="vs-dark"
-        value={userCode}
-        onChange={handleChange}
-      />
-      <button className="compile-btn" onClick={handleSubmit}>
-        Compile
-      </button>
-      <div className="output">
-        <div className="output-row">
-          <h3 className="output-label">Output: </h3>
-          <h3 className="output-response">{output}</h3>
+      <div className="container">
+        <div className="container__left">
+          <h3 className="container__title">Two Sum</h3>
+          <div className="container__description">
+            <p>
+              Given the root of a binary tree, return the inorder traversal of
+              its nodes' values.
+            </p>
+          </div>
         </div>
-        <div className="output-row">
-          <h3 className="output-label">Test Result: </h3>
-          <h3 className="output-response">{result}</h3>
-        </div>
-        <div className="output-row">
-          <h3 className="output-label">Test Case: </h3>
-          <h3 className="output-response">{mockTest}</h3>
-        </div>
-        <div className="output-row">
-          <h3 className="output-label">Test Result: </h3>
-          <h3 className="output-response">{result}</h3>
-        </div>
-        <div className="output-row">
-          <h3 className="output-label">Errors: </h3>
-          <h3 className="output-response">{errors}</h3>
-        </div>
-        <div className="output-row">
-          <h3 className="output-label">Hints: </h3>
-          <h3 className="output-response">{hints}</h3>
+        <div className="container__right">
+          <MonacoEditor
+            className="editor"
+            width="800"
+            height="600"
+            language="javascript"
+            theme="vs-dark"
+            value={userCode}
+            onChange={handleChange}
+          />
+          <div className="container__button-cont">
+            <button className="button button--danger">Quit</button>
+            <button className="button button--secondary">Test</button>
+            <button className="button button--primary">Submit</button>
+          </div>
+          <label className="output-cont__label">Console</label>
+          <div className="output-cont"></div>
         </div>
       </div>
     </>
