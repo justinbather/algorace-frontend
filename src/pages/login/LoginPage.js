@@ -20,12 +20,13 @@ export const LoginPage = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentials: true,
           },
+          withCredentials: true,
         }
       );
 
       if (response.status === 200) {
+        console.log("redirecting to home");
         navigate("/home");
       } else {
         console.log(response);
