@@ -11,6 +11,7 @@ export const PracticeEditor = () => {
   const [output, setOutput] = useState("");
   const [errors, setErrors] = useState("");
   const [testing, setTesting] = useState(false);
+  const [jobId, setJobId] = useState("");
 
   const { problemTitle } = useParams();
 
@@ -35,6 +36,46 @@ export const PracticeEditor = () => {
     }
   };
 
+  const checkStatus = (jobId) => {
+    const maxAttempts = 5;
+    let numAttempts = 0;
+    let pollStatus = setInterval(() => {
+      numAttempts++;
+      try {
+        console.log("Polling for job status");
+        axios.get(`http://localhost:7070/job-status/${jobId}`).then((res) => {
+          console.log(res.data);
+          switch (res.data.status) {
+            case "failed": {
+              setErrors(res.data.output);
+              setTesting(false);
+              clearInterval(pollStatus);
+              break;
+            }
+            case "completed": {
+              setOutput(res.data.output);
+              setTesting(false);
+              clearInterval(pollStatus);
+              break;
+            }
+            default: {
+              if (numAttempts >= maxAttempts) {
+                setErrors("Error: Compilation timed out. Timelimit exceeded");
+                setTesting(false);
+                clearInterval(pollStatus);
+                return;
+              }
+              // status is pending so continue to next interval
+              return;
+            }
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }, 1500);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -52,17 +93,9 @@ export const PracticeEditor = () => {
           withCredentials: true,
         }
       );
-      setTesting(false);
-      switch (response.data.success) {
-        case true: {
-          setOutput(response.data.output);
-          break;
-        }
-        case false: {
-          setErrors(response.data.output);
-          break;
-        }
-      }
+
+      setJobId(response.data.jobId);
+      checkStatus(response.data.jobId);
     } catch (err) {
       console.log(err);
       console.error("error occured sending request to compile -> ", err);
