@@ -8,6 +8,7 @@ import { ChallengeLobby } from "./pages/challenge/ChallengeLobby";
 import { Signup } from "./pages/signup/Signup";
 import { Practice } from "./pages/practice/Practice";
 import { PracticeEditor } from "./pages/editor/PracticeEditor";
+import { Lobby } from "./pages/lobby/Lobby";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             path="/practice/:problemTitle/:language"
             element={<PracticeEditor />}
           ></Route>
+          <Route path="/lobby/:lobbyName" element={<Lobby />} />
         </Routes>
       </div>
     </BrowserRouter>
