@@ -9,9 +9,13 @@ export const Lobby = () => {
 
   socket.on("user_joined", (msg) => console.log(msg));
 
+  //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
+  //And only send the joined user the lobby selected problems
   useEffect(() => {
     socket.emit("join_lobby", lobbyName);
   }, [lobbyName]);
+
+
 
   return (
     <>
