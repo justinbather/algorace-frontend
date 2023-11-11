@@ -9,6 +9,7 @@ import { Signup } from "./pages/signup/Signup";
 import { Practice } from "./pages/practice/Practice";
 import { PracticeEditor } from "./pages/editor/PracticeEditor";
 import { Lobby } from "./pages/lobby/Lobby";
+import { JoinLobby } from "./pages/challenge/JoinLobby";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/challenge" element={<ChallengeLobby />}></Route>
+          <Route path="/challenge/join" element={<JoinLobby />} />
           <Route path="/practice" element={<Practice />}></Route>
           <Route
             path="/practice/:problemTitle/:language"

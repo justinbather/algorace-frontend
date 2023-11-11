@@ -3,7 +3,7 @@ import incrementIcon from "../../assets/icons/Increment.svg";
 import decrementIcon from "../../assets/icons/Decrement.svg";
 import "../../assets/styles/pages/challenge_lobby.scss";
 import "../../assets/styles/partials/_components.scss";
-
+import { socket } from "../../config/socket";
 import axios from "axios";
 
 import { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ export const ChallengeLobby = () => {
   const [selectedProblems, setSelectedProblems] = useState([]);
   const [problemsList, setProblemsList] = useState(null);
   const [lobbyName, setLobbyName] = useState("");
+  const [userData, setUserData] = useState(null)
 
   const fetchProblemList = async () => {
     try {
@@ -35,6 +36,20 @@ export const ChallengeLobby = () => {
     }
   };
 
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/verify`, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+      )
+      setUserData(response.data.userData)
+      console.log(response.data.userData)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const handleConfigContinue = (e) => {
     e.preventDefault();
     setShowProblems(true);
@@ -46,23 +61,20 @@ export const ChallengeLobby = () => {
 
   const handleCreateLobby = async () => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/lobby`,
-        { name: lobbyName, settings: { selectedProblems } },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
-      navigate(`/lobby/${response.data.lobby.name}`);
+      const response = await axios.post(`${BASE_URL}/lobby`, { name: lobbyName, selectedProblems }, { withCredentials: true })
+      if (response.status === 201) {
+        navigate(`/lobby/${lobbyName}`)
+      }
+
+
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   };
 
   useEffect(() => {
     fetchProblemList();
+    fetchUserInfo()
   }, []);
 
   return (

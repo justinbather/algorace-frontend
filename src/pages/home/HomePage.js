@@ -24,7 +24,9 @@ export const HomePage = () => {
           <Link to="/challenge">
             <button className="button button--primary">Start a Lobby</button>
           </Link>
-          <button className="button button--secondary">Join a Lobby</button>
+          <Link to='/challenge/join'>
+            <button className="button button--secondary">Join a Lobby</button>
+          </Link>
         </div>
       </div>
       <div className="practice">
