@@ -8,17 +8,38 @@ import { socket } from "../../config/socket";
 export const Lobby = () => {
   const { lobbyName } = useParams();
   const [userData, setUserData] = useState(null)
-  const [lobbyData, setLobbyData] = useState({})
+  const [lobbyData, setLobbyData] = useState(null)
 
-  socket.on("user_joined", (msg) => console.log(msg));
-  socket.on('successful_enter', (data) => {
-    console.log('successfully joined lobby: ', data)
-  })
-  socket.on("user_ready", (msg) => console.log(msg))
 
-  const handleReady = () => {
+
+  const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
   }
+
+
+  useEffect(() => {
+
+    const handleUserJoined = (data) => {
+      setLobbyData(data)
+    }
+    const handleSuccessfulEnter = (data) => {
+      console.log(data)
+      setLobbyData(data)
+    }
+    const handleLobbyUpdate = (data) => {
+      setLobbyData(data)
+    }
+
+    socket.on('user_joined', handleUserJoined)
+    socket.on('successful_enter', handleSuccessfulEnter)
+    socket.on('user_ready', handleLobbyUpdate)
+
+    return () => {
+      socket.off('user_joined', handleUserJoined)
+      socket.off('successful_enter', handleSuccessfulEnter)
+      socket.off('user_ready', handleLobbyUpdate)
+    }
+  }, [socket])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,13 +49,13 @@ export const Lobby = () => {
         console.log(response.data.userData)
         setUserData(response.data.userData)
         socket.emit('join_lobby', { username: response.data.userData.username, lobby: lobbyName })
+        console.log('joining lobby')
       } catch (err) {
         console.log(err)
       }
     }
     fetchUser()
-    //Handle disconnect
-  }, [])
+  }, [lobbyName])
 
   //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
 
@@ -48,12 +69,14 @@ export const Lobby = () => {
             <h2>Lobby</h2>
           </div>
           <br></br> {/*! Temporary: fix the styling for this, needs margin */}
+
           <div className="problem-card">
             <p>Two Sum</p>
             <p>Hashmap</p>
             <p>Easy</p>
           </div>
-          <button onClick={handleReady} className="button button--primary">Continue</button>
+
+          <button onClick={handleUserReady} className="button button--primary">Ready</button>
         </div>
 
         <div className="lobby-setup lobby-setup--problems">
@@ -62,12 +85,17 @@ export const Lobby = () => {
             {/* <p>Setup your lobby below</p> */}
           </div>
           <div className="lobby-setup__problem-container">
-            <a>
-              <div className="problem-card">
-                <p>Name</p>
-                <p>Ready</p>
-              </div>
-            </a>
+            {
+              lobbyData?.users && lobbyData.users.map((user) => (
+                <a key={user.username}>
+                  <div className="problem-card">
+                    <p>{user.username}</p>
+                    <p>{user.isReady ? "Ready" : "Not Ready"}</p>
+                  </div>
+                </a>
+
+              ))
+            }
           </div>
         </div>
       </div>
