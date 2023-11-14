@@ -10,12 +10,9 @@ export const Lobby = () => {
   const [userData, setUserData] = useState(null)
   const [lobbyData, setLobbyData] = useState(null)
 
-
-
   const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
   }
-
 
   useEffect(() => {
 
@@ -55,10 +52,9 @@ export const Lobby = () => {
       }
     }
     fetchUser()
-  }, [lobbyName])
+  }, [])
 
   //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
-
 
   return (
     <>
