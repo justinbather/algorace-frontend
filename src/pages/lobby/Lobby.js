@@ -5,12 +5,17 @@ import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { socket } from "../../config/socket";
 import { ChallengeEditor } from "../challenge/ChallengeEditor";
+import MonacoEditor from "react-monaco-editor/lib/editor";
 
 export const Lobby = () => {
   const { lobbyName } = useParams();
   const [userData, setUserData] = useState(null)
   const [lobbyData, setLobbyData] = useState(null)
   const [ready, setReady] = useState(false)
+  const [matchStart, setMatchStart] = useState(false)
+  const [roundNumber, setRoundNumber] = useState(0)
+  const [currentProblem, setCurrentProblem] = useState(null)
+  const [userCode, setUserCode] = useState("")
 
   const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
@@ -21,6 +26,14 @@ export const Lobby = () => {
     socket.emit('user_unready', { username: userData.username, lobby: lobbyName })
   }
 
+
+  const handleStart = () => {
+    socket.emit('start_match', { username: userData.username, lobby: lobbyName })
+  }
+
+  const handleChange = (e) => {
+    setUserCode(e)
+  }
   useEffect(() => {
 
     const handleUserJoined = (data) => {
@@ -42,12 +55,20 @@ export const Lobby = () => {
       console.log(data.isReady)
       setReady(data.isReady)
     })
+    socket.on('begin_match', (data) => {
+      setCurrentProblem(data.currentProblem)
+      setUserCode(data.currentProblem.userStarterCode)
+      setRoundNumber(data.roundNumber)
+      setLobbyData(data.lobbyObj)
+      setMatchStart(true)
+    })
 
     return () => {
       socket.off('user_joined')
       socket.off('successful_enter')
       socket.off('user_ready')
       socket.off('successful_ready')
+      socket.off('begin_match')
     }
   }, [socket])
 
@@ -68,6 +89,26 @@ export const Lobby = () => {
   }, [lobbyName])
 
   //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
+  if (matchStart) {
+    return (
+      <>
+        <MonacoEditor
+          className="editor"
+          width="750"
+          height="600"
+          language="javascript"
+          theme="vs-dark"
+          value={userCode}
+          onChange={handleChange}
+          options={{
+            minimap: {
+              enabled: false,
+            },
+          }}
+        />
+      </>
+    )
+  }
 
   return (
     <>
@@ -85,6 +126,7 @@ export const Lobby = () => {
             <p>Easy</p>
           </div>
 
+          <button onClick={handleStart} className="button button-primary">Start Game</button>
           {
             ready ?
               <button onClick={handleUserUnready} className="button button--primary">Unready</button> :
