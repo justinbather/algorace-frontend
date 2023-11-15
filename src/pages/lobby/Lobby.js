@@ -1,4 +1,4 @@
-import { Navbar } from "../../components/Navbar";
+import { Navbar } from "../../components/Navbar"
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -62,6 +62,16 @@ export const Lobby = () => {
       setLobbyData(data.lobbyObj)
       setMatchStart(true)
     })
+    socket.on('round_completed', (data) => {
+      console.log('round has been completed')
+      const al = alert(`Round over. ${data.winner} won!`)
+      console.log(data)
+    })
+    socket.on('game_completed', (data) => {
+      console.log(data)
+      const al = alert(`Round over. ${data.winner} won!`)
+      console.log('the game is completed')
+    })
 
     return () => {
       socket.off('user_joined')
@@ -69,6 +79,8 @@ export const Lobby = () => {
       socket.off('user_ready')
       socket.off('successful_ready')
       socket.off('begin_match')
+      socket.off('round_completed')
+      socket.off('game_completed')
     }
   }, [socket])
 
@@ -92,20 +104,7 @@ export const Lobby = () => {
   if (matchStart) {
     return (
       <>
-        <MonacoEditor
-          className="editor"
-          width="750"
-          height="600"
-          language="javascript"
-          theme="vs-dark"
-          value={userCode}
-          onChange={handleChange}
-          options={{
-            minimap: {
-              enabled: false,
-            },
-          }}
-        />
+        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} />
       </>
     )
   }
