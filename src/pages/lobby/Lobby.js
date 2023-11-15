@@ -4,14 +4,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { socket } from "../../config/socket";
+import { ChallengeEditor } from "../challenge/ChallengeEditor";
 
 export const Lobby = () => {
   const { lobbyName } = useParams();
   const [userData, setUserData] = useState(null)
   const [lobbyData, setLobbyData] = useState(null)
+  const [ready, setReady] = useState(false)
 
   const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
+  }
+
+
+  const handleUserUnready = () => {
+    socket.emit('user_unready', { username: userData.username, lobby: lobbyName })
   }
 
   useEffect(() => {
@@ -25,16 +32,22 @@ export const Lobby = () => {
     }
     const handleLobbyUpdate = (data) => {
       setLobbyData(data)
+
     }
 
     socket.on('user_joined', handleUserJoined)
     socket.on('successful_enter', handleSuccessfulEnter)
     socket.on('user_ready', handleLobbyUpdate)
+    socket.on('successful_ready', (data) => {
+      console.log(data.isReady)
+      setReady(data.isReady)
+    })
 
     return () => {
-      socket.off('user_joined', handleUserJoined)
-      socket.off('successful_enter', handleSuccessfulEnter)
-      socket.off('user_ready', handleLobbyUpdate)
+      socket.off('user_joined')
+      socket.off('successful_enter')
+      socket.off('user_ready')
+      socket.off('successful_ready')
     }
   }, [socket])
 
@@ -52,7 +65,7 @@ export const Lobby = () => {
       }
     }
     fetchUser()
-  }, [])
+  }, [lobbyName])
 
   //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
 
@@ -72,7 +85,11 @@ export const Lobby = () => {
             <p>Easy</p>
           </div>
 
-          <button onClick={handleUserReady} className="button button--primary">Ready</button>
+          {
+            ready ?
+              <button onClick={handleUserUnready} className="button button--primary">Unready</button> :
+              <button onClick={handleUserReady} className="button button--primary">Ready</button>
+          }
         </div>
 
         <div className="lobby-setup lobby-setup--problems">
