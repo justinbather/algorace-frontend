@@ -5,7 +5,6 @@ import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { socket } from "../../config/socket";
 import { ChallengeEditor } from "../challenge/ChallengeEditor";
-import MonacoEditor from "react-monaco-editor/lib/editor";
 
 export const Lobby = () => {
   const { lobbyName } = useParams();
@@ -16,11 +15,15 @@ export const Lobby = () => {
   const [roundNumber, setRoundNumber] = useState(0)
   const [currentProblem, setCurrentProblem] = useState(null)
   const [userCode, setUserCode] = useState("")
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
   }
 
+  const handleUserReadyNextRound = () => {
+    socket.emit('user_ready_next_match', { username: userData.username, lobby: lobbyName })
+  }
 
   const handleUserUnready = () => {
     socket.emit('user_unready', { username: userData.username, lobby: lobbyName })
@@ -34,6 +37,12 @@ export const Lobby = () => {
   const handleChange = (e) => {
     setUserCode(e)
   }
+
+  const closeModal = () => {
+    setModalIsOpen(false)
+  }
+
+
   useEffect(() => {
 
     const handleUserJoined = (data) => {
@@ -55,6 +64,7 @@ export const Lobby = () => {
       console.log(data.isReady)
       setReady(data.isReady)
     })
+
     socket.on('begin_match', (data) => {
       setCurrentProblem(data.currentProblem)
       setUserCode(data.currentProblem.userStarterCode)
@@ -62,15 +72,29 @@ export const Lobby = () => {
       setLobbyData(data.lobbyObj)
       setMatchStart(true)
     })
+
     socket.on('round_completed', (data) => {
       console.log('round has been completed')
-      const al = alert(`Round over. ${data.winner} won!`)
+      setModalIsOpen(true)
       console.log(data)
     })
+
     socket.on('game_completed', (data) => {
       console.log(data)
       const al = alert(`Round over. ${data.winner} won!`)
       console.log('the game is completed')
+    })
+
+    socket.on('next_round', (data) => {
+
+      setLobbyData(data.lobbyObj)
+      setUserCode(data.currentProblem.userStarterCode)
+      setCurrentProblem(data.currentProblem)
+      setRoundNumber(data.lobbyObj.currentRound)
+
+      console.log('new round')
+      closeModal()
+
     })
 
     return () => {
@@ -81,6 +105,7 @@ export const Lobby = () => {
       socket.off('begin_match')
       socket.off('round_completed')
       socket.off('game_completed')
+      socket.off('new_round')
     }
   }, [socket])
 
@@ -104,7 +129,7 @@ export const Lobby = () => {
   if (matchStart) {
     return (
       <>
-        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} />
+        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} modalIsOpen={modalIsOpen} closeModal={closeModal} handleUserReady={handleUserReadyNextRound} />
       </>
     )
   }
@@ -119,12 +144,16 @@ export const Lobby = () => {
           </div>
           <br></br> {/*! Temporary: fix the styling for this, needs margin */}
 
-          <div className="problem-card">
-            <p>Two Sum</p>
-            <p>Hashmap</p>
-            <p>Easy</p>
-          </div>
+          {lobbyData && lobbyData.problems.map((problem) => (
+            <div className="problem-card">
+              <>
+                <p>{problem.title}</p>
+                <p>{problem.category}</p>
+                <p>{problem.difficulty}</p>
+              </>
+            </div>
 
+          ))}
           <button onClick={handleStart} className="button button-primary">Start Game</button>
           {
             ready ?

@@ -31,6 +31,7 @@ export const ChallengeLobby = () => {
       });
       console.log(response.data);
       setProblemsList(response.data.problems);
+
     } catch (err) {
       console.error(err);
     }
@@ -56,11 +57,19 @@ export const ChallengeLobby = () => {
   };
 
   const handleProblemSelect = (problemId) => {
-    setSelectedProblems(...selectedProblems, problemId);
+
+    console.log(problemId)
+
+    setSelectedProblems(current => [...current, problemId]);
   };
+
+  useEffect(() => {
+    console.log(selectedProblems)
+  }, [selectedProblems])
 
   const handleCreateLobby = async () => {
     try {
+      console.log('selected problems', selectedProblems)
       const response = await axios.post(`${BASE_URL}/lobby`, { name: lobbyName, selectedProblems }, { withCredentials: true })
       if (response.status === 201) {
         navigate(`/lobby/${lobbyName}`)
@@ -139,6 +148,7 @@ export const ChallengeLobby = () => {
             </div>
             <div className="lobby-setup__problem-container">
               {problemsList &&
+
                 problemsList.map((problem) => (
                   <a onClick={() => handleProblemSelect(problem._id)}>
                     <div className="problem-card">

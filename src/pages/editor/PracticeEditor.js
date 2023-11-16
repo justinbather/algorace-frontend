@@ -118,12 +118,7 @@ export const PracticeEditor = () => {
       <div className="editor-container">
         <div className="editor-container__left">
           <h3 className="editor-container__title">Two Sum</h3>
-          <div className="editor-container__description">
-            <p>
-              Given the root of a binary tree, return the inorder traversal of
-              its nodes' values.
-            </p>
-          </div>
+          <div className="editor-container__description">{problem.description}</div>
         </div>
         <div className="editor-container__right">
           <div className="editor-container__editor-wrapper">
