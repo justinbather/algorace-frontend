@@ -3,18 +3,88 @@ import incrementIcon from "../../assets/icons/Increment.svg";
 import decrementIcon from "../../assets/icons/Decrement.svg";
 import "../../assets/styles/pages/challenge_lobby.scss";
 import "../../assets/styles/partials/_components.scss";
+import { socket } from "../../config/socket";
+import axios from "axios";
 
 import { useEffect, useState } from "react";
+import { BASE_URL } from "../../config/constants";
+import { useNavigate } from "react-router-dom";
 
 export const ChallengeLobby = () => {
+  const navigate = useNavigate();
+
   const [showProblems, setShowProblems] = useState(false);
   const [problemCount, setProblemCount] = useState(3);
   const [submissionsCount, setSubmissionsCount] = useState(3);
+  const [selectedProblems, setSelectedProblems] = useState([]);
+  const [problemsList, setProblemsList] = useState(null);
+  const [lobbyName, setLobbyName] = useState("");
+  const [userData, setUserData] = useState(null)
+
+  const fetchProblemList = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/problems`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      console.log(response.data);
+      setProblemsList(response.data.problems);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/verify`, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+      )
+      setUserData(response.data.userData)
+      console.log(response.data.userData)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   const handleConfigContinue = (e) => {
     e.preventDefault();
     setShowProblems(true);
   };
+
+  const handleProblemSelect = (problemId) => {
+
+    console.log(problemId)
+
+    setSelectedProblems(current => [...current, problemId]);
+  };
+
+  useEffect(() => {
+    console.log(selectedProblems)
+  }, [selectedProblems])
+
+  const handleCreateLobby = async () => {
+    try {
+      console.log('selected problems', selectedProblems)
+      const response = await axios.post(`${BASE_URL}/lobby`, { name: lobbyName, selectedProblems, numRounds: problemCount }, { withCredentials: true })
+      if (response.status === 201) {
+        navigate(`/lobby/${lobbyName}`)
+      }
+
+
+    } catch (err) {
+      console.error(err)
+    }
+  };
+
+  useEffect(() => {
+    fetchProblemList();
+    fetchUserInfo()
+  }, []);
 
   return (
     <>
@@ -32,6 +102,7 @@ export const ChallengeLobby = () => {
               placeholder="john123"
               name="lobbyName"
               id="lobbyName"
+              onChange={(e) => setLobbyName(e.target.value)}
             ></input>
             <label htmlFor="lobbyPasskey">Passkey</label>
             <input
@@ -76,13 +147,23 @@ export const ChallengeLobby = () => {
               {/* <p>Setup your lobby below</p> */}
             </div>
             <div className="lobby-setup__problem-container">
-              <a>
-                <div className="problem-card">
-                  <p>Two sum</p>
-                  <p>Hashtable</p>
-                  <p>Easy</p>
-                </div>
-              </a>
+              {problemsList &&
+
+                problemsList.map((problem) => (
+                  <a onClick={() => handleProblemSelect(problem._id)}>
+                    <div className="problem-card">
+                      <p>{problem.title}</p>
+                      <p>{problem.category}</p>
+                      <p>{problem.difficulty}</p>
+                    </div>
+                  </a>
+                ))}
+              <button
+                className="button button--primary"
+                onClick={handleCreateLobby}
+              >
+                Continue
+              </button>
             </div>
           </div>
         )}
