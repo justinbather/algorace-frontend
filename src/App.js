@@ -1,6 +1,6 @@
 import "./App.css";
 import "./assets/styles/index.scss";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/home/HomePage";
@@ -10,6 +10,7 @@ import { Practice } from "./pages/practice/Practice";
 import { PracticeEditor } from "./pages/editor/PracticeEditor";
 import { Lobby } from "./pages/lobby/Lobby";
 import { JoinLobby } from "./pages/challenge/JoinLobby";
+import { Redirect } from "./components/redirect";
 
 function App() {
   return (
@@ -27,9 +28,10 @@ function App() {
             element={<PracticeEditor />}
           ></Route>
           <Route path="/lobby/:lobbyName" element={<Lobby />} />
+          <Route path="*" element={<Navigate to='/home' replace />}></Route>
         </Routes>
       </div>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 
