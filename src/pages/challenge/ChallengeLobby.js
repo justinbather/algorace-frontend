@@ -70,7 +70,7 @@ export const ChallengeLobby = () => {
   const handleCreateLobby = async () => {
     try {
       console.log('selected problems', selectedProblems)
-      const response = await axios.post(`${BASE_URL}/lobby`, { name: lobbyName, selectedProblems }, { withCredentials: true })
+      const response = await axios.post(`${BASE_URL}/lobby`, { name: lobbyName, selectedProblems, numRounds: problemCount }, { withCredentials: true })
       if (response.status === 201) {
         navigate(`/lobby/${lobbyName}`)
       }

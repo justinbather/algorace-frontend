@@ -6,12 +6,14 @@ import { BASE_URL } from "../../config/constants";
 import { socket } from "../../config/socket";
 import { ChallengeEditor } from "../challenge/ChallengeEditor";
 
+
 export const Lobby = () => {
   const { lobbyName } = useParams();
   const [userData, setUserData] = useState(null)
   const [lobbyData, setLobbyData] = useState(null)
   const [ready, setReady] = useState(false)
   const [matchStart, setMatchStart] = useState(false)
+  const [gameCompleteModalIsOpen, setGameCompleteModalIsOpen] = useState(false)
   const [roundNumber, setRoundNumber] = useState(0)
   const [currentProblem, setCurrentProblem] = useState(null)
   const [userCode, setUserCode] = useState("")
@@ -79,10 +81,13 @@ export const Lobby = () => {
       console.log(data)
     })
 
-    socket.on('game_completed', (data) => {
-      console.log(data)
-      const al = alert(`Round over. ${data.winner} won!`)
-      console.log('the game is completed')
+    socket.on('game_completed', () => {
+      console.log('setting gamecomplete')
+      setModalIsOpen(false)
+      setTimeout(() => {
+        setGameCompleteModalIsOpen(true)
+
+      }, 3000)
     })
 
     socket.on('next_round', (data) => {
@@ -129,10 +134,12 @@ export const Lobby = () => {
   if (matchStart) {
     return (
       <>
-        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} modalIsOpen={modalIsOpen} closeModal={closeModal} handleUserReady={handleUserReadyNextRound} />
+        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} modalIsOpen={modalIsOpen} closeModal={closeModal} gameCompleteModalIsOpen={gameCompleteModalIsOpen} handleUserReady={handleUserReadyNextRound} />
       </>
     )
   }
+
+
 
   return (
     <>

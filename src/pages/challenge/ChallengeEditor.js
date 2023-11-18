@@ -7,7 +7,7 @@ import Modal from 'react-modal'
 import '../../assets/styles/components/modal.scss'
 
 
-export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modalIsOpen, closeModal, handleUserReady }) => {
+export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modalIsOpen, closeModal, handleUserReady, gameCompleteModalIsOpen }) => {
   const [problem, setProblem] = useState(null);
   const [userCode, setUserCode] = useState("");
   const [output, setOutput] = useState("");
@@ -102,6 +102,22 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
               <p className='modal-wrapper__para'>Next round will begin once all players press Ready</p>
 
               <button onClick={handleUserReady} className='modal-wrapper__button'>Ready</button>
+
+            </div>
+          </div>
+        </div>
+
+      </Modal>
+      <Modal isOpen={gameCompleteModalIsOpen} className='modal'>
+        <div className='modal-wrapper'>
+          <div className='modal-wrapper__overlay'>
+            <h1 className='modal-wrapper__header'>Game Over!</h1>
+            <div className='modal-wrapper__bottom'>
+              <p className='modal-wrapper__para'>Display winner and stats here</p>
+
+              <Link to='/home'>
+                <button className='modal-wrapper__button'>Back Home</button>
+              </Link>
 
             </div>
           </div>

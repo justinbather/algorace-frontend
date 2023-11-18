@@ -111,16 +111,13 @@ export const PracticeEditor = () => {
     fetchProblem();
   }, []);
 
-  return (
+  return (problem &&
     <>
       <div className="editor-container">
         <div className="editor-container__left">
-          <h3 className="editor-container__title">Two Sum</h3>
+          <h3 className="editor-container__title">{problem.title}</h3>
           <div className="editor-container__description">
-            <p>
-              Given the root of a binary tree, return the inorder traversal of
-              its nodes' values.
-            </p>
+            <p>{problem.description}</p>
           </div>
         </div>
         <div className="editor-container__right">
