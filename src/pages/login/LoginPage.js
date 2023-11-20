@@ -24,7 +24,7 @@ export const LoginPage = () => {
           withCredentials: true,
         }
       );
-
+      //
       if (response.status === 200) {
         console.log("redirecting to home");
         navigate("/home");
