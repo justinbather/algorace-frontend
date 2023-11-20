@@ -89,7 +89,6 @@ export const PracticeEditor = () => {
           problem: problem,
         },
         {
-          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
