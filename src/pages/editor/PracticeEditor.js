@@ -43,7 +43,7 @@ export const PracticeEditor = () => {
       numAttempts++;
       try {
         console.log("Polling for job status");
-        axios.get(`{MANAGER_URL}/job-status/${jobId}`).then((res) => {
+        axios.get(`${MANAGER_URL}/job-status/${jobId}`).then((res) => {
           console.log(res.data);
           switch (res.data.status) {
             case "failed": {
