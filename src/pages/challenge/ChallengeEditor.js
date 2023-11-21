@@ -17,14 +17,14 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
 
 
   const checkStatus = (jobId) => {
-    const maxAttempts = 5;
+    const maxAttempts = 10;
     let numAttempts = 0;
     let pollStatus = setInterval(() => {
       numAttempts++;
       try {
         console.log("Polling for job status");
 
-        axios.get(`http://localhost:7070/job-status/${jobId}`).then((res) => {
+        axios.get(`${MANAGER_URL}/job-status/${jobId}`).then((res) => {
           console.log(res.data);
           switch (res.data.status) {
             case "failed": {
