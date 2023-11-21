@@ -155,7 +155,7 @@ export const Lobby = () => {
         </div>
         <div className="lobby-container__row">
           <div className="left-cont">
-            <h2>Problems</h2>
+            <h3>Problems</h3>
             {lobbyData && lobbyData.problems.map((problem) => (
               <div className="left-cont__problem-card">
                 <>
@@ -169,7 +169,7 @@ export const Lobby = () => {
 
           <div className="right-cont">
             <div className="">
-              <h2>Users</h2>
+              <h3>Users</h3>
             </div>
             <div className="">
               {

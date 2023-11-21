@@ -125,7 +125,7 @@ export const PracticeEditor = () => {
               className="editor"
               width="750"
               height="600"
-              language="javascript"
+              defaultLanguage="javascript"
               theme="vs-dark"
               value={userCode}
               onChange={handleChange}
