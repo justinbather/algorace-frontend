@@ -73,7 +73,7 @@ export const PracticeEditor = () => {
       } catch (err) {
         console.error(err);
       }
-    }, 1500);
+    }, 2000);
   };
 
   const handleSubmit = async (e) => {
