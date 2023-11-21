@@ -37,7 +37,7 @@ export const PracticeEditor = () => {
   };
 
   const checkStatus = (jobId) => {
-    const maxAttempts = 5;
+    const maxAttempts = 10;
     let numAttempts = 0;
     let pollStatus = setInterval(() => {
       numAttempts++;
