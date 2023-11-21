@@ -5,21 +5,11 @@ import { useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import { useVerifyUser } from "../../hooks/useVerifyUser"
 
 export const HomePage = () => {
 
-  const navigate = useNavigate()
-  useEffect(() => {
-    const verify = async () => {
-      const response = await axios.get(`${BASE_URL}/auth/verify`, { withCredentials: true })
-
-      if (!response.status === 200) {
-        navigate('/login')
-      }
-    }
-    verify()
-  }, [])
-
+  const verify = useVerifyUser()
   return (
     <>
       <Navbar />

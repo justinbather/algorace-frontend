@@ -14,7 +14,7 @@ export const ChallengeLobby = () => {
   const navigate = useNavigate();
 
   const [showProblems, setShowProblems] = useState(false);
-  const [problemCount, setProblemCount] = useState(3);
+  const [problemCount, setProblemCount] = useState(1);
   const [submissionsCount, setSubmissionsCount] = useState(3);
   const [selectedProblems, setSelectedProblems] = useState([]);
   const [problemsList, setProblemsList] = useState(null);
@@ -132,12 +132,16 @@ export const ChallengeLobby = () => {
                 <img src={incrementIcon}></img>
               </a>
             </div>
-            <button
-              className="button button--primary"
-              onClick={handleConfigContinue}
-            >
-              Continue
-            </button>
+
+            {!showProblems &&
+              <button
+                className="button button--primary"
+                onClick={handleConfigContinue}
+              >
+                Continue
+              </button>
+
+            }
           </form>
         </div>
         {showProblems && (
@@ -152,14 +156,14 @@ export const ChallengeLobby = () => {
                 problemsList.map((problem) => (
                   <a onClick={() => handleProblemSelect(problem._id)}>
                     <div className="problem-card">
-                      <p>{problem.title}</p>
-                      <p>{problem.category}</p>
-                      <p>{problem.difficulty}</p>
+                      <p className="problem-card__item">{problem.title}</p>
+                      <p className="problem-card__item">{problem.category}</p>
+                      <p className="problem-card__item">{problem.difficulty}</p>
                     </div>
                   </a>
                 ))}
               <button
-                className="button button--primary"
+                className="start_button"
                 onClick={handleCreateLobby}
               >
                 Continue

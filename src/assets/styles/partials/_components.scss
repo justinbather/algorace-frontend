@@ -28,9 +28,33 @@
   height: 45px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   border-radius: 10px;
   border: 1px solid #f6f6f6;
   margin: 0 1rem;
+
+  &__item {
+    width: 30%;
+    text-align: center;
+  }
+}
+
+
+.user-card {
+height: 45px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem;
+  gap: 5rem;
+
+  &__item {
+    text-align: center;
+
+    &--ready {
+      color: #52FF00;
+    }
+  }
 }
