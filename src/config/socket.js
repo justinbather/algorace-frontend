@@ -1,4 +1,3 @@
 import { io } from "socket.io-client";
-
-export const socket = io.connect(process.env.REACT_APP_SOCKET_URL);
-//
+import { SOCKET_URL } from "./constants";
+export const socket = io.connect(SOCKET_URL);

@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { socket } from "../../config/socket";
 import { ChallengeEditor } from "../challenge/ChallengeEditor";
+import "./lobby.scss"
 
 
 export const Lobby = () => {
@@ -51,10 +52,11 @@ export const Lobby = () => {
       setLobbyData(data)
     }
     const handleSuccessfulEnter = (data) => {
-      console.log(data)
+      console.log('success enter', data)
       setLobbyData(data)
     }
     const handleLobbyUpdate = (data) => {
+      console.log('lobby update', data)
       setLobbyData(data)
 
     }
@@ -144,24 +146,53 @@ export const Lobby = () => {
   return (
     <>
       <Navbar />
-      <div className="container">
-        <div className="lobby-setup">
-          <div className="lobby-setup__title-cont">
-            <h2>Lobby</h2>
+      <div className="lobby-container">
+        <div className="lobby-container__heading-cont">
+
+          <h1>Justin's Lobby</h1>
+          <h3>Passcode: 1234</h3>
+
+        </div>
+        <div className="lobby-container__row">
+          <div className="left-cont">
+            <h2>Problems</h2>
+            {lobbyData && lobbyData.problems.map((problem) => (
+              <div className="left-cont__problem-card">
+                <>
+                  <p className="left-cont__problem-card__item">{problem.title}</p>
+                </>
+              </div>
+
+            ))}
+
           </div>
-          <br></br> {/*! Temporary: fix the styling for this, needs margin */}
 
-          {lobbyData && lobbyData.problems.map((problem) => (
-            <div className="problem-card">
-              <>
-                <p>{problem.title}</p>
-                <p>{problem.category}</p>
-                <p>{problem.difficulty}</p>
-              </>
+          <div className="right-cont">
+            <div className="">
+              <h2>Users</h2>
             </div>
+            <div className="">
+              {
+                lobbyData?.users && lobbyData.users.map((user) => (
+                  <a key={user.username}>
+                    <div className="user-card">
+                      <p className="user-card__item">{user.username}</p>
+                      {user.isReady ?
 
-          ))}
-          <button onClick={handleStart} className="button button-primary">Start Game</button>
+                        <p className="user-card__item--ready">Ready</p>
+                        :
+                        <p className="user-card__item">Waiting..</p>
+                      }
+                    </div>
+                  </a>
+
+                ))
+              }
+            </div>
+          </div>
+        </div>
+        <div className="lobby-container__button-cont" >
+          <button onClick={handleStart} className="button button--danger">Start Game</button>
           {
             ready ?
               <button onClick={handleUserUnready} className="button button--primary">Unready</button> :
@@ -169,25 +200,6 @@ export const Lobby = () => {
           }
         </div>
 
-        <div className="lobby-setup lobby-setup--problems">
-          <div className="lobby-setup__title-cont">
-            <h2>Users</h2>
-            {/* <p>Setup your lobby below</p> */}
-          </div>
-          <div className="lobby-setup__problem-container">
-            {
-              lobbyData?.users && lobbyData.users.map((user) => (
-                <a key={user.username}>
-                  <div className="problem-card">
-                    <p>{user.username}</p>
-                    <p>{user.isReady ? "Ready" : "Not Ready"}</p>
-                  </div>
-                </a>
-
-              ))
-            }
-          </div>
-        </div>
       </div>
     </>
   );

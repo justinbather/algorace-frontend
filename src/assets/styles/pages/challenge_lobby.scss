@@ -66,11 +66,28 @@
 
   &__problem-container {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: .5rem;
   }
 }
 
 .button {
   align-self: flex-end;
+}
+
+.start_button {
+  width: 140px;
+  height: 30px;
+  border-radius: 4px;
+  color: $primary-white;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.43);
+  background: rgba(5, 165, 117, 0.44);
+  align-self: flex-end;
+  justify-self: flex-end;
+  margin-top: 1rem;
 }
 
 .container {
