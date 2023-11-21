@@ -14,7 +14,7 @@ export const ChallengeLobby = () => {
   const navigate = useNavigate();
 
   const [showProblems, setShowProblems] = useState(false);
-  const [problemCount, setProblemCount] = useState(3);
+  const [problemCount, setProblemCount] = useState(1);
   const [submissionsCount, setSubmissionsCount] = useState(3);
   const [selectedProblems, setSelectedProblems] = useState([]);
   const [problemsList, setProblemsList] = useState(null);
