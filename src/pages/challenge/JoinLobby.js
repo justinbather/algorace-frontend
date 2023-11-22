@@ -6,14 +6,8 @@ import { BASE_URL } from "../../config/constants"
 
 export const JoinLobby = () => {
 
-  const [userData, setUserData] = useState(null)
-  const [lobbyState, setLobbyState] = useState("")
   const [lobbyNameInput, setLobbyNameInput] = useState("")
-  const [socket, setSocket] = useState(null);
-  const [lobbyData, setLobbyData] = useState(null);
   const navigate = useNavigate()
-
-
 
   const handleJoinLobby = async () => {
     try {
@@ -41,8 +35,6 @@ export const JoinLobby = () => {
           <input onChange={(e) => setLobbyNameInput(e.target.value)} placeholder="Room name"></input >
         </div>
       </div>
-
-
     </>
   )
 }

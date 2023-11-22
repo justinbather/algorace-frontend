@@ -22,8 +22,6 @@ export const Navbar = () => {
 
       if (response.status === 200) {
         navigate("/login");
-      } else {
-        console.log(response);
       }
     } catch (err) {
       console.error(err);

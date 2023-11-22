@@ -29,7 +29,6 @@ export const PracticeEditor = () => {
 
       setProblem(response.data.problem);
       setUserCode(response.data.problem.userStarterCode);
-
       setOutput(response.data.output);
     } catch (err) {
       console.error(err);

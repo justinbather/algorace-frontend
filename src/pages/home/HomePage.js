@@ -1,10 +1,7 @@
 import { Navbar } from "../../components/Navbar";
 import "../../assets/styles/partials/_components.scss";
 import "../../assets/styles/pages/home.scss";
-import { useEffect } from "react";
-import axios from "axios";
-import { BASE_URL } from "../../config/constants";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useVerifyUser } from "../../hooks/useVerifyUser"
 
 export const HomePage = () => {
