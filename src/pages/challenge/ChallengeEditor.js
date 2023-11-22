@@ -8,7 +8,6 @@ import '../../assets/styles/components/modal.scss'
 
 
 export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modalIsOpen, closeModal, handleUserReady, gameCompleteModalIsOpen }) => {
-  const [problem, setProblem] = useState(null);
   const [userCode, setUserCode] = useState("");
   const [output, setOutput] = useState("");
   const [errors, setErrors] = useState("");
@@ -19,11 +18,10 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
   const checkStatus = (jobId) => {
     const maxAttempts = 10;
     let numAttempts = 0;
+
     let pollStatus = setInterval(() => {
       numAttempts++;
       try {
-        console.log("Polling for job status");
-
         axios.get(`${MANAGER_URL}/job-status/${jobId}`).then((res) => {
           console.log(res.data);
           switch (res.data.status) {
@@ -79,7 +77,6 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
       setJobId(response.data.jobId);
       checkStatus(response.data.jobId);
     } catch (err) {
-      console.log(err);
       console.error("error occured sending request to compile -> ", err);
     }
   };
@@ -100,29 +97,24 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
             <h1 className='modal-wrapper__header'>Justin won</h1>
             <div className='modal-wrapper__bottom'>
               <p className='modal-wrapper__para'>Next round will begin once all players press Ready</p>
-
               <button onClick={handleUserReady} className='modal-wrapper__button'>Ready</button>
-
             </div>
           </div>
         </div>
-
       </Modal>
+
       <Modal isOpen={gameCompleteModalIsOpen} className='modal'>
         <div className='modal-wrapper'>
           <div className='modal-wrapper__overlay'>
             <h1 className='modal-wrapper__header'>Game Over!</h1>
             <div className='modal-wrapper__bottom'>
               <p className='modal-wrapper__para'>Display winner and stats here</p>
-
               <Link to='/home'>
                 <button className='modal-wrapper__button'>Back Home</button>
               </Link>
-
             </div>
           </div>
         </div>
-
       </Modal>
 
       <div className="editor-container">

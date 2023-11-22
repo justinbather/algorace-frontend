@@ -37,10 +37,6 @@ export const Lobby = () => {
     socket.emit('start_match', { username: userData.username, lobby: lobbyName })
   }
 
-  const handleChange = (e) => {
-    setUserCode(e)
-  }
-
   const closeModal = () => {
     setModalIsOpen(false)
   }
@@ -58,14 +54,12 @@ export const Lobby = () => {
     const handleLobbyUpdate = (data) => {
       console.log('lobby update', data)
       setLobbyData(data)
-
     }
 
     socket.on('user_joined', handleUserJoined)
     socket.on('successful_enter', handleSuccessfulEnter)
     socket.on('user_ready', handleLobbyUpdate)
     socket.on('successful_ready', (data) => {
-      console.log(data.isReady)
       setReady(data.isReady)
     })
 
@@ -78,32 +72,26 @@ export const Lobby = () => {
     })
 
     socket.on('round_completed', (data) => {
-      console.log('round has been completed')
       setModalIsOpen(true)
-      console.log(data)
     })
 
     socket.on('game_completed', () => {
-      console.log('setting gamecomplete')
       setModalIsOpen(false)
       setTimeout(() => {
         setGameCompleteModalIsOpen(true)
-
       }, 3000)
     })
 
     socket.on('next_round', (data) => {
-
       setLobbyData(data.lobbyObj)
       setUserCode(data.currentProblem.userStarterCode)
       setCurrentProblem(data.currentProblem)
       setRoundNumber(data.lobbyObj.currentRound)
 
-      console.log('new round')
       closeModal()
-
     })
 
+    // Prevents memory leaks when component unmounts
     return () => {
       socket.off('user_joined')
       socket.off('successful_enter')
@@ -118,13 +106,11 @@ export const Lobby = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+
       try {
         const response = await axios.get(`${BASE_URL}/auth/verify`, { withCredentials: true })
-
-        console.log(response.data.userData)
         setUserData(response.data.userData)
         socket.emit('join_lobby', { username: response.data.userData.username, lobby: lobbyName })
-        console.log('joining lobby')
       } catch (err) {
         console.log(err)
       }
@@ -132,7 +118,6 @@ export const Lobby = () => {
     fetchUser()
   }, [lobbyName])
 
-  //When user joins we need to broadcast to rest of lobby that the user is there to update the joined users list
   if (matchStart) {
     return (
       <>
@@ -140,8 +125,6 @@ export const Lobby = () => {
       </>
     )
   }
-
-
 
   return (
     <>
@@ -162,11 +145,9 @@ export const Lobby = () => {
                   <p className="left-cont__problem-card__item">{problem.title}</p>
                 </>
               </div>
-
             ))}
 
           </div>
-
           <div className="right-cont">
             <div className="">
               <h3>Users</h3>
@@ -185,9 +166,7 @@ export const Lobby = () => {
                       }
                     </div>
                   </a>
-
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>
@@ -199,7 +178,6 @@ export const Lobby = () => {
               <button onClick={handleUserReady} className="button button--primary">Ready</button>
           }
         </div>
-
       </div>
     </>
   );

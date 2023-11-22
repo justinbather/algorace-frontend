@@ -3,7 +3,7 @@ import "../../assets/styles/pages/login.scss";
 import axios from "axios";
 import { BASE_URL } from "../../config/constants";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ export const LoginPage = () => {
 
             <button className="form-container__button">Log in</button>
           </div>
-          <p>Sign up</p>
+          <Link className="form-container__signup" to='/signup'>Sign up</Link>
         </form>
       </div>
     </div>

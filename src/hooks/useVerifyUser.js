@@ -9,17 +9,9 @@ export const useVerifyUser = () => {
   const navigate = useNavigate();
   const verifyUser = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/auth/verify`,
+      const response = await axios.get(`${BASE_URL}/auth/verify`, { withCredentials: true });
 
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
+      console.log(response.status, response.data)
       if (response.status !== 200) {
         navigate("/login");
       }

@@ -68,6 +68,12 @@
     color: $primary-white;
     background: rgba(5, 165, 117, 0.44);
   }
+  &__signup {
+    text-decoration: none;
+    color: $primary-white;
+    margin-top: .5rem;
+    font-size: 15px;
+  }
 }
 
 p,

@@ -21,15 +21,14 @@ export const Signup = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            withCredentials: true,
           },
+          withCredentials: true,
         }
       );
-
       if (response.status === 201) {
-        navigate("/home");
-      } else {
-        console.log(response);
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000)
       }
     } catch (err) {
       console.error(err);
@@ -60,7 +59,6 @@ export const Signup = () => {
               placeholder="***********"
               id="password"
             ></input>
-
             <button className="form-container__button">Sign up</button>
           </div>
         </form>
