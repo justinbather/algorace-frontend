@@ -1,9 +1,9 @@
 import logo from "../../assets/images/Logo-text.svg";
 import "../../assets/styles/pages/login.scss";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Spinner } from "../../components/spinner";
 import { BASE_URL } from "../../config/constants";
 
 export const Signup = () => {
@@ -11,10 +11,12 @@ export const Signup = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const response = await axios.post(
         `${BASE_URL}/auth/signup`,
         { username, password },
@@ -26,9 +28,7 @@ export const Signup = () => {
         }
       );
       if (response.status === 201) {
-        setTimeout(() => {
-          navigate("/home");
-        }, 1000)
+        navigate("/home");
       }
     } catch (err) {
       console.error(err);
@@ -37,8 +37,8 @@ export const Signup = () => {
 
   return (
     <div className="login">
-      <div className="login__container">
-        <img src={logo}></img>
+      <Spinner loading={loading} />      <div className="login__container">
+        <img alt="" src={logo}></img>
         <form onSubmit={handleLogin} className="form-container">
           <div className="form-container__inner">
             <label className="form-container__label" htmlFor="username">
@@ -58,6 +58,7 @@ export const Signup = () => {
               className="form-container__input"
               placeholder="***********"
               id="password"
+              type="password"
             ></input>
             <button className="form-container__button">Sign up</button>
           </div>
