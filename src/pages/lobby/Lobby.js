@@ -132,8 +132,7 @@ export const Lobby = () => {
       <div className="lobby-container">
         <div className="lobby-container__heading-cont">
 
-          <h1>Justin's Lobby</h1>
-          <h3>Passcode: 1234</h3>
+          <h1>{lobbyData.host.username}'s lobby</h1>
 
         </div>
         <div className="lobby-container__row">

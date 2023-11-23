@@ -94,7 +94,7 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
       <Modal isOpen={modalIsOpen} className='modal'>
         <div className='modal-wrapper'>
           <div className='modal-wrapper__overlay'>
-            <h1 className='modal-wrapper__header'>Justin won</h1>
+            <h1 className='modal-wrapper__header'>Round Complete!</h1>
             <div className='modal-wrapper__bottom'>
               <p className='modal-wrapper__para'>Next round will begin once all players press Ready</p>
               <button onClick={handleUserReady} className='modal-wrapper__button'>Ready</button>
