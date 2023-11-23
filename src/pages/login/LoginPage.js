@@ -60,6 +60,7 @@ export const LoginPage = () => {
               className="form-container__input"
               placeholder="***********"
               id="password"
+              type="password"
             ></input>
 
             <button className="form-container__button">Log in</button>
