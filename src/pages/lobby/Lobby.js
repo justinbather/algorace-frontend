@@ -132,8 +132,9 @@ export const Lobby = () => {
       <div className="lobby-container">
         <div className="lobby-container__heading-cont">
 
-          <h1>{lobbyData.host.username}'s lobby</h1>
-
+          {lobbyData &&
+            <h1>{lobbyData.host.username}'s lobby</h1>
+          }
         </div>
         <div className="lobby-container__row">
           <div className="left-cont">
