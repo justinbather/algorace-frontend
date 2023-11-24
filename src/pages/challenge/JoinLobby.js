@@ -31,8 +31,8 @@ export const JoinLobby = () => {
           </p>
         </div>
         <div className="challenge__buttons">
+          <input className="challenge__input" onChange={(e) => setLobbyNameInput(e.target.value)} placeholder="Room name"></input >
           <button onClick={handleJoinLobby} className="button button--primary">Join Lobby</button>
-          <input onChange={(e) => setLobbyNameInput(e.target.value)} placeholder="Room name"></input >
         </div>
       </div>
     </>

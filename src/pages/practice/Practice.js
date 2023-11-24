@@ -36,9 +36,9 @@ export const Practice = () => {
           {problems.map((problem) => (
             <Link to={`/practice/${problem.title}/javascript`}>
               <div className="problem-card">
-                <p>{problem.title}</p>
-                <p>Hashtable</p>
-                <p>Easy</p>
+                <p className="problem-card__item">{problem.title}</p>
+                <p className="problem-card__item">Hashtable</p>
+                <p className="problem-card__item">Easy</p>
               </div>
             </Link>
           ))}

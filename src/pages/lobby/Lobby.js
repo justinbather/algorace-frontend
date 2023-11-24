@@ -19,6 +19,8 @@ export const Lobby = () => {
   const [currentProblem, setCurrentProblem] = useState(null)
   const [userCode, setUserCode] = useState("")
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [winner, setWinner] = useState(null)
+  const [leaderboard, setLeaderboard] = useState(null)
 
   const handleUserReady = () => {
     socket.emit('user_ready', { username: userData.username, lobby: lobbyName })
@@ -75,8 +77,10 @@ export const Lobby = () => {
       setModalIsOpen(true)
     })
 
-    socket.on('game_completed', () => {
+    socket.on('game_completed', (data) => {
       setModalIsOpen(false)
+      setWinner(data.winner)
+      setLeaderboard(data.leaderboard)
       setTimeout(() => {
         setGameCompleteModalIsOpen(true)
       }, 3000)
@@ -121,7 +125,7 @@ export const Lobby = () => {
   if (matchStart) {
     return (
       <>
-        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} modalIsOpen={modalIsOpen} closeModal={closeModal} gameCompleteModalIsOpen={gameCompleteModalIsOpen} handleUserReady={handleUserReadyNextRound} />
+        <ChallengeEditor socket={socket} user={userData} lobbyData={lobbyData} currentProblem={currentProblem} modalIsOpen={modalIsOpen} closeModal={closeModal} gameCompleteModalIsOpen={gameCompleteModalIsOpen} handleUserReady={handleUserReadyNextRound} winner={winner} leaderboard={leaderboard} />
       </>
     )
   }
@@ -132,9 +136,9 @@ export const Lobby = () => {
       <div className="lobby-container">
         <div className="lobby-container__heading-cont">
 
-          <h1>Justin's Lobby</h1>
-          <h3>Passcode: 1234</h3>
-
+          {lobbyData &&
+            <h1>{lobbyData.host.username}'s lobby</h1>
+          }
         </div>
         <div className="lobby-container__row">
           <div className="left-cont">
