@@ -17,6 +17,7 @@ export const ChallengeLobby = () => {
   const [problemCount, setProblemCount] = useState(1);
   const [submissionsCount, setSubmissionsCount] = useState(3);
   const [selectedProblems, setSelectedProblems] = useState([]);
+  const [selectedProblemIds, setSelectedProblemIds] = useState([])
   const [problemsList, setProblemsList] = useState(null);
   const [lobbyName, setLobbyName] = useState("");
   const [userData, setUserData] = useState(null)
@@ -58,10 +59,16 @@ export const ChallengeLobby = () => {
 
   const handleProblemSelect = (problemId) => {
 
-    console.log(problemId)
-
     setSelectedProblems(current => [...current, problemId]);
   };
+
+  const handleProblemDeselect = (problemId) => {
+
+    const problems = selectedProblems.filter((problem) => {
+      return problem !== problemId
+    })
+    setSelectedProblems(problems)
+  }
 
   useEffect(() => {
     console.log(selectedProblems)
@@ -152,16 +159,25 @@ export const ChallengeLobby = () => {
             </div>
             <div className="lobby-setup__problem-container">
               {problemsList &&
-
-                problemsList.map((problem) => (
-                  <a onClick={() => handleProblemSelect(problem._id)}>
-                    <div className="problem-card">
-                      <p className="problem-card__item">{problem.title}</p>
-                      <p className="problem-card__item">{problem.category}</p>
-                      <p className="problem-card__item">{problem.difficulty}</p>
-                    </div>
-                  </a>
-                ))}
+                problemsList.map((problem) =>
+                  selectedProblems.includes(problem._id) ? (
+                    <a onClick={() => handleProblemDeselect(problem._id)}>
+                      <div className="problem-card problem-card--selected">
+                        <p className="problem-card__item">{problem.title}</p>
+                        <p className="problem-card__item">{problem.category}</p>
+                        <p className="problem-card__item">{problem.difficulty}</p>
+                      </div>
+                    </a>
+                  ) : (
+                    <a onClick={() => handleProblemSelect(problem._id)}>
+                      <div className="problem-card">
+                        <p className="problem-card__item">{problem.title}</p>
+                        <p className="problem-card__item">{problem.category}</p>
+                        <p className="problem-card__item">{problem.difficulty}</p>
+                      </div>
+                    </a>
+                  )
+                )}
               <button
                 className="start_button"
                 onClick={handleCreateLobby}
