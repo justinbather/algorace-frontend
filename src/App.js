@@ -15,7 +15,7 @@ import { Redirect } from "./components/redirect";
 function App() {
   return (
     <BrowserRouter>
-      <div className="main">
+      <div className="main_algo">
         <Routes>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>

@@ -1,4 +1,5 @@
 import MonacoEditor from "react-monaco-editor";
+import Editor from "@monaco-editor/react"
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -119,22 +120,12 @@ export const PracticeEditor = () => {
           </div>
         </div>
         <div className="editor-container__right">
-          <div className="editor-container__editor-wrapper">
-            <MonacoEditor
-              className="editor"
-              width="750"
-              height="600"
-              defaultLanguage="javascript"
-              theme="vs-dark"
-              value={userCode}
-              onChange={handleChange}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-              }}
-            />
-          </div>
+          <Editor
+            language="javascript"
+            theme="vs-dark"
+            value={userCode}
+            onChange={handleChange}
+          />
           <div className="editor-container__button-cont">
             <Link to="/home">
               <button className="button button--danger">Quit</button>
