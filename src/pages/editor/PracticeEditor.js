@@ -1,4 +1,3 @@
-import MonacoEditor from "react-monaco-editor";
 import Editor from "@monaco-editor/react"
 import axios from "axios";
 import { useState, useEffect } from "react";
