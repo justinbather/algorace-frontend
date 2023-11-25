@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import Editor from '@monaco-editor/react'
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import { MANAGER_URL } from '../../config/constants';
@@ -137,22 +137,17 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
           </div>
         </div>
         <div className="editor-container__right">
-          <div className="editor-container__editor-wrapper">
-            <MonacoEditor
-              className="editor"
-              width="750"
-              height="600"
-              language="javascript"
-              theme="vs-dark"
-              value={userCode}
-              onChange={handleChange}
-              options={{
-                minimap: {
-                  enabled: false,
-                },
-              }}
-            />
-          </div>
+          <Editor
+            language="javascript"
+            theme="vs-dark"
+            value={userCode}
+            onChange={handleChange}
+            options={{
+              minimap: {
+                enabled: false,
+              },
+            }}
+          />
           <div className="editor-container__button-cont">
             <Link to="/home">
               <button className="button button--danger">Quit</button>
