@@ -40,6 +40,7 @@ export const PracticeEditor = () => {
 
   const handleLanguageChange = async (e) => {
     navigate(`/practice/${problemTitle}/${e.target.value}`)
+    window.location.reload()
   }
 
   const checkStatus = (jobId) => {
