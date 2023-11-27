@@ -1,4 +1,5 @@
 @use "../partials/components";
+@use "../partials/variables" as *;
 
 .editor-container {
   display: flex;
@@ -39,6 +40,14 @@
     height: 100%;
     gap: 1rem;
     margin-right: 2rem;
+  }
+
+  &__select {
+    width: 120px;
+    color: $primary-white;
+    background: none;
+    border-radius: 5px;
+    padding: .1rem;
   }
 
   &__editor-wrapper {
