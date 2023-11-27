@@ -1,7 +1,7 @@
 import Editor from "@monaco-editor/react"
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL, MANAGER_URL } from "../../config/constants";
 import "../../assets/styles/pages/editor.scss";
 
@@ -13,12 +13,15 @@ export const PracticeEditor = () => {
   const [testing, setTesting] = useState(false);
   const [jobId, setJobId] = useState("");
 
-  const { problemTitle } = useParams();
+  const { problemTitle, language } = useParams();
+
+  const navigate = useNavigate()
+
 
   const fetchProblem = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/problems/${problemTitle}/javascript`,
+        `${BASE_URL}/problems/${problemTitle}/${language}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -34,6 +37,10 @@ export const PracticeEditor = () => {
       console.error(err);
     }
   };
+
+  const handleLanguageChange = async (e) => {
+    navigate(`/practice/${problemTitle}/${e.target.value}`)
+  }
 
   const checkStatus = (jobId) => {
     const maxAttempts = 10;
@@ -119,8 +126,12 @@ export const PracticeEditor = () => {
           </div>
         </div>
         <div className="editor-container__right">
+          <select className="editor-container__select" defaultValue={language} onChange={handleLanguageChange}>
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+          </select>
           <Editor
-            language="javascript"
+            language={language}
             theme="vs-dark"
             value={userCode}
             onChange={handleChange}
