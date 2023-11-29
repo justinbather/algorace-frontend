@@ -40,11 +40,8 @@ export const PracticeEditor = () => {
 
   const handleLanguageChange = async (e) => {
     navigate(`/practice/${problemTitle}/${e.target.value}`)
-
     await fetchProblem()
-
-    
-
+    window.location.reload()
   }
 
   const checkStatus = (jobId) => {
@@ -76,13 +73,15 @@ export const PracticeEditor = () => {
                 clearInterval(pollStatus);
                 return;
               }
-              // status is pending so continue to next interval
+
+              // status is pending so c ontinue to next interval
               return;
             }
           }
         });
       } catch (err) {
         console.error(err);
+
       }
     }, 2000);
   };
@@ -128,7 +127,6 @@ export const PracticeEditor = () => {
           <h3 className="editor-container__title">{problem.title}</h3>
           <div className="editor-container__description">
             {
-
               problem.descriptions.map((desc) => (
                 <p>{desc}</p>
               ))
