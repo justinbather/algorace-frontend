@@ -40,6 +40,7 @@ export const PracticeEditor = () => {
 
   const handleLanguageChange = async (e) => {
     navigate(`/practice/${problemTitle}/${e.target.value}`)
+    await fetchProblem()
   }
 
   const checkStatus = (jobId) => {
@@ -122,7 +123,12 @@ export const PracticeEditor = () => {
         <div className="editor-container__left">
           <h3 className="editor-container__title">{problem.title}</h3>
           <div className="editor-container__description">
-            <p>{problem.description}</p>
+            {
+
+              problem.descriptions.map((desc) => (
+                <p>{desc}</p>
+              ))
+            }
           </div>
         </div>
         <div className="editor-container__right">
