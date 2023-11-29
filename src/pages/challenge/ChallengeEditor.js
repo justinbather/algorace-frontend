@@ -133,7 +133,10 @@ export const ChallengeEditor = ({ socket, user, lobbyData, currentProblem, modal
         <div className="editor-container__left">
           <h3 className="editor-container__title">{currentProblem.title}</h3>
           <div className="editor-container__description">
-            <p>{currentProblem.description}</p>
+            {currentProblem.descriptions.map((desc) => (
+
+              <p>{desc}</p>
+            ))}
           </div>
         </div>
         <div className="editor-container__right">
