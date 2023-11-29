@@ -175,7 +175,7 @@ export const Lobby = () => {
           </div>
         </div>
         <div className="lobby-container__button-cont" >
-          <button onClick={handleStart} className="button button--danger">Start Game</button>
+          <button onClick={handleStart} className="button button--secondary">Start Game</button>
           {
             ready ?
               <button onClick={handleUserUnready} className="button button--primary">Unready</button> :
