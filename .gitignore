@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# local env (service URLs; baked into the bundle at build time)
+.env

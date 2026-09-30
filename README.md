@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# algorace-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The React client for **AlgoRace**, a multiplayer data structures and algorithms practice
+platform — solve problems solo, or race a friend in a shared lobby with live updates.
 
-## Available Scripts
+This is the UI only. It talks to four backend services; the full architecture is described in
+[algorace-project](https://github.com/justinbather/algorace-project).
 
-In the project directory, you can run:
+## Run it
 
-### `npm start`
+```bash
+npm install
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Serves on `http://localhost:3000`. The backends it expects are configured in
+`src/config/constants.js` and overridable by environment:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Variable | Default | Service |
+| --- | --- | --- |
+| `REACT_APP_BASE_URL` | `:8080` | [User service](https://github.com/justinbather/algorace-user-service) — auth, lobbies, problems |
+| `REACT_APP_SOCKET_URL` | `:8000` | [Socket server](https://github.com/justinbather/algorace-socket) — live lobby state |
+| `REACT_APP_MANAGER_URL` | `:7070` | [Compile manager](https://github.com/justinbather/algorace-compile-manager) — job submission and status |
+| `REACT_APP_COMPILE_URL` | `:5050` | [Remote compiler](https://github.com/justinbather/remote-compiler) — sandboxed execution |
 
-### `npm test`
+## Screens
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Route area | Purpose |
+| --- | --- |
+| `pages/home` | Landing and mode selection |
+| `pages/login`, `pages/signup` | Auth against the user service |
+| `pages/practice`, `pages/editor` | Solo mode — problem list and the practice editor |
+| `pages/lobby`, `pages/challenge` | Multiplayer — create or join a lobby, then the race editor |
 
-### `npm run build`
+## How it works
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Code editing** is [Monaco](https://microsoft.github.io/monaco-editor/) (the editor from VS Code)
+  via `@monaco-editor/react`, seeded from `src/config/starter_code.txt` and switchable by language.
+- **Live lobby state** runs over `socket.io-client`. A single shared socket is created in
+  `src/config/socket.js` and imported where needed, so lobby membership and race progress update
+  without polling.
+- **Submitting code** is asynchronous by design: the client POSTs to the compile manager, gets a
+  job id back with `pending` status, and polls for the result while the worker pool compiles and
+  runs the submission inside a Docker container. The UI has to hold the "waiting on a job" state
+  rather than blocking on a request.
+- **Auth** is a token checked by the `useVerifyUser` hook, with `components/redirect.js` guarding
+  routes that need a session.
+- Styling is Sass, organised into partials, components and per-page sheets, set in JetBrains Mono.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Notes
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Bootstrapped with Create React App and still on `react-scripts`.
+- A `.env` file is committed. It holds only the `REACT_APP_*` service URLs above, which are baked
+  into the client bundle at build time and are not secrets — but it shouldn't be tracked.
+- `algorace-client` is an earlier, empty version of this repo.
